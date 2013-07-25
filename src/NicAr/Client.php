@@ -64,6 +64,12 @@ class Client {
     return $this->result_for($response);
   }
 
+  public function name_servers($host) {
+    $host = trim($host);
+    $response = $this->agent->get("{$this->api_host}/name_servers/{$host}");
+    return $this->result_for($response);
+  }
+
   public function status($domain) {
     $domain = trim($domain);
     $response = $this->agent->get("{$this->api_host}/status/{$domain}");
