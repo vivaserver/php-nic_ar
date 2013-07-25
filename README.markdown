@@ -49,6 +49,109 @@ A typical response would be:
       [6] => .tur.ar
     )
 
+All the following lookups will raise a NicAr\NotFound exception if the requested resource could not be found.
+
+    $domains = $client->domains("vivaserver.com.ar");
+
+The response for an existing, registered, delegated domain would be like this:
+
+    Array
+    (
+      [status] => Array
+        (
+          [available] => 
+          [delegated] => 1
+          [expiring] => 
+          [phasing_out] => 
+          [pending] => 
+          [registered] => 1
+        )
+      [name] => vivaserver
+      [domain] => .com.ar
+      [created_on] => 2004-11-18
+      [expires_on] => 2013-11-18
+      [message] => 
+      [contacts] => Array
+        (
+          [registrant] => Array
+            (
+              [name] => Cristian Renato Arroyo
+              [occupation] => Diseno de Paginas Web
+              [address] => Pje. Vucetich 676. Ciudad De Nieva
+              [city] => S. S. de Jujuy
+              [province] => Jujuy
+              [zip_code] => 4600
+              [country] => Argentina
+              [phone] => (0388)155827713
+              [fax] => (0388)155827713
+            )
+          [responsible] => Array
+            (
+              [name] => Cristian Renato Arroyo
+              [address] => Pje. Vucetich 676. Ciudad De Nieva.
+              [city] => S. S. de jujuy
+              [province] => Jujuy
+              [zip_code] => 4600
+              [country] => Argentina
+              [phone] => (0388)155827713
+              [fax] => (0388)155827713
+              [work_hours] => 8am-1pm
+            )
+          [administrative] => Array
+            (
+              [name] => Dynamic DNS Network Services
+              [address] => 210 Park Ave. #267
+              [city] => Worcester
+              [province] => 
+              [zip_code] => MA 01609
+              [country] => USA
+              [phone] => 1-508-798-2145
+              [fax] => 1-508-798-5748
+              [activity] => Network Services
+            )
+          [technical] => Array
+            (
+              [name] => Andre Dure
+              [address] => Humahuaca 1303
+              [city] => Capital Federal
+              [province] => Ciudad de Buenos Aires
+              [zip_code] => C1405BIA
+              [country] => Argentina
+              [phone] => 49588864
+              [fax] => 43335885
+              [work_hours] => 10 a 22
+            )
+        )
+      [dns_servers] => Array
+        (
+          [primary] => Array
+            (
+              [host] => ns1.mydyndns.org
+              [ip] => 
+            )
+          [secondary] => Array
+            (
+              [host] => ns2.mydyndns.org
+              [ip] => 
+            )
+          [alternate1] => Array
+            (
+              [host] => ns3.mydyndns.org
+              [ip] => 
+            )
+          [alternate2] => Array
+            (
+              [host] => ns4.mydyndns.org
+              [ip] => 
+            )
+          [alternate3] => Array
+            (
+              [host] => ns5.mydyndns.org
+              [ip] => 
+            )
+        )
+    )
+
 ### Entities lookups
 
 All registered domains have a related entities (registrant/administrative contacts) and persons (responsible/technical contacts).
