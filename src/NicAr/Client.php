@@ -21,7 +21,8 @@ class UnavailableError  extends \Exception {}
 class Client {
   const API_URI = 'http://api.nicalert.com.ar';
 
-  private $agent;
+  private $agent;  # Restful_agent is the only dependency
+  private $assoc;  # return responses as associative arrays?
   private $api_host;
 
   public function __construct($assoc=FALSE, $api_hosts=array()) {
