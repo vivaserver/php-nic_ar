@@ -37,6 +37,7 @@ class Client {
 
   public function domains($domain=NULL) {
     if (!empty($domain)) {
+      $domain = trim($domain);
       $response = $this->agent->get("{$this->api_host}/domains/{$domain}");
     }
     else $response = $this->agent->get("{$this->api_host}/domains");
@@ -45,21 +46,25 @@ class Client {
   }
 
   public function entities($name) {
+    $name = urlencode(trim($name));
     $response = $this->agent->get("{$this->api_host}/entities/{$name}");
     return $this->result_for($response);
   }
 
   public function people($name) {
+    $name = urlencode(trim($name));
     $response = $this->agent->get("{$this->api_host}/people/{$name}");
     return $this->result_for($response);
   }
 
   public function transactions($domain) {
+    $domain = trim($domain);
     $response = $this->agent->get("{$this->api_host}/transactions/{$domain}");
     return $this->result_for($response);
   }
 
   public function status($domain) {
+    $domain = trim($domain);
     $response = $this->agent->get("{$this->api_host}/status/{$domain}");
     return $this->result_for($response);
   }
