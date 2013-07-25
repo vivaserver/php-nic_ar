@@ -1,7 +1,6 @@
 {
   "name": "vivaserver/nic_ar",
   "type": "library",
-  "version": "0.0.1",
   "description": "Extract information about any '.ar' (Argentina) domain name",
   "homepage": "https://github.com/vivaserver/php-nic_ar",
   "license": "MIT",

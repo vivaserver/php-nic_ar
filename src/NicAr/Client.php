@@ -24,13 +24,14 @@ class Client {
   private $agent;
   private $api_host;
 
-  public function __construct($api_hosts=array()) {
+  public function __construct($assoc=FALSE, $api_hosts=array()) {
     if (!empty($api_hosts)) {  # multiple API hosts, anyone?
       $idx = array_rand($api_hosts);
       $this->api_host = $api_hosts[$idx];
     }
     else $this->api_host = self::API_URI;
 
+    $this->assoc = $assoc;
     $this->agent = new \Restful\Agent;
   }
 
@@ -67,7 +68,7 @@ class Client {
     try {
       switch ($response->code) {
         case 200:
-          return json_decode($response->body);
+          return json_decode($response->body,$this->assoc);
         break;
         case 204:
           throw new NoContent;
