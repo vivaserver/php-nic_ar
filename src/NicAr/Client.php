@@ -6,17 +6,17 @@ namespace NicAr;
 #
 # (c)2013 Cristian R. Arroyo <cristian.arroyo@vivaserver.com>
 
-class NoContent extends Exception {}
-class NotFound  extends Exception {}
+class NoContent extends \Exception {}
+class NotFound  extends \Exception {}
 
-class CaptchaError      extends Exception {}
-class ExpectationError  extends Exception {}
-class ParameterError    extends Exception {}
-class PreconditionError extends Exception {}
-class RequestError      extends Exception {}
-class ServiceError      extends Exception {}
-class TimeoutError      extends Exception {}
-class UnavailableError  extends Exception {}
+class CaptchaError      extends \Exception {}
+class ExpectationError  extends \Exception {}
+class ParameterError    extends \Exception {}
+class PreconditionError extends \Exception {}
+class RequestError      extends \Exception {}
+class ServiceError      extends \Exception {}
+class TimeoutError      extends \Exception {}
+class UnavailableError  extends \Exception {}
 
 class Client {
   const API_URI = 'http://api.nicalert.com.ar';
@@ -101,6 +101,6 @@ class Client {
         break;
       }
     }
-    catch (Exception $e) { throw $e; }  # whatever else ought to be non-API's
+    catch (\Exception $e) { throw $e; }  # whatever else ought to be non-API's
   }
 }
