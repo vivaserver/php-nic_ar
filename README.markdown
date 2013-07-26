@@ -30,7 +30,7 @@ Having both files on the PHP include path, you can require both on that order be
 
 ## Usage
 
-Create a new instance of the RESTful Agent after requiring the Composer autoloader and you should be ready to go.
+Create a new instance of the NicAr Client after requiring the Composer autoloader and you should be ready to go.
 
     require 'vendor/autoload.php';
     $client = new NicAr\Client;
