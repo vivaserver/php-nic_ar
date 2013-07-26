@@ -1,6 +1,6 @@
 # NicAr Client
 
-The NicAr Client [Composer](http://getcomposer.org/) package allows to you programatically extract information about any ".ar" (Argentina) domain name. 
+The NicAr Client [Composer](http://getcomposer.org/) package allows to you programatically extract information about any ".ar" (Argentina) domain name. This package is also the _official_ PHP client for the [public nic!alert API](http://api.nicalert.com.ar).
 
 ## Installation
 
@@ -49,7 +49,7 @@ A typical response would be:
       [6] => .tur.ar
     )
 
-All the following lookups will raise a NicAr\NotFound exception if the requested resource could not be found.
+All the following lookups will raise a `NicAr\NotFound` exception if the requested resource could not be found.
 
     $domains = $client->domains("vivaserver.com.ar");
 
@@ -201,9 +201,78 @@ A typical response would be:
       [handle] => NICAR-H12587
     )
 
+Name servers can also be queried by it's IP address, should it be available.
+
+### Domain transactions lookups
+
+If a domain name has no recent transactions, a `NicAr\NoContent` exception will be raised. Otherwise an array of recent transactions will be returned.
+
+    $client->transactions("amazon.com.ar");
+
+A typical, non-empty response would be:
+
+    Array
+    (
+      [0] => Array
+        (
+          [id] => REN19949812
+          [created_at] => 2013-07-11T12:10:57-03:00
+          [description] => Renovacion de Nombre
+          [status] => FINALIZADO
+          [notes] => Tramite finalizado el 11/07/13.
+        )
+    )
+
+Transactions can also be queried by it's unique identifier:
+
+    $client->transactions("REN19949812");
+
+A successful response would look like:
+
+    Array
+    (
+      [domain] => amazon.com.ar
+      [created_at] => 2013-07-11T12:10:57-03:00
+      [description] => Renovacion de Nombre
+      [status] => FINALIZADO
+      [notes] => Tramite finalizado el 11/07/13.
+    )
+
+### Check a domain status
+
+You can also check if a given domain name resolves OK to it's name servers, thus effectively know if it's available online or not.
+
+    $client->status("www.nic.ar");
+
+A successful response would be like:
+
+    Array
+    (
+      [domain] => www.nic.ar
+      [online] => 1
+      [offline] => 
+      [ip] => 200.16.109.25
+      [host] => roldan.nic.ar
+    )
+
+But also note that a domain name without the "www." may or may not resolve in the same way.
+
+    $client->status("nic.ar");
+
+A successful response would be like:
+
+    Array
+    (
+      [domain] => nic.ar
+      [online] => 1
+      [offline] => 
+      [ip] => 200.16.109.19
+      [host] => firpo.nic.ar
+    )
+
 ## Full API reference
 
-The full documentation of the [public nic!alert API](http://api.nicalert.com.ar) is available at [http://api.nicalert.com.ar](http://api.nicalert.com.ar) if you want to write your own client, use any other language, or just use CURL in a RESTful way.
+The full documentation of the [public nic!alert API](http://api.nicalert.com.ar) is available at [http://api.nicalert.com.ar/docs](http://api.nicalert.com.ar/docs) if you want to write your own client, use any other language, or just use CURL in a RESTful way.
 
 ## License
 
