@@ -15,6 +15,19 @@ The easiest way is to install it as any [Composer](http://getcomposer.org/) pack
 
 The package will be automatically installed when you execute the `composer install` command.
 
+### Installation without Composer
+
+If for some reason you want to install the NicAr Client without the Composer package manager, there are two relevant files you need:
+
+1. [Agent.php](https://github.com/vivaserver/php-restful_agent/blob/master/src/Restful/Agent.php)
+2. [Client.php](https://github.com/vivaserver/php-nic_ar/blob/master/src/NicAr/Client.php)
+
+Having both files on the PHP include path, you can require both on that order before creating an instance of the client:
+
+    require 'Agent.php';
+    require 'Client.php';
+    $client = new NicAr\Client;
+
 ## Usage
 
 Create a new instance of the RESTful Agent after requiring the Composer autoloader and you should be ready to go.
