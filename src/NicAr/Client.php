@@ -19,7 +19,12 @@ class TimeoutError      extends \Exception {}
 class UnavailableError  extends \Exception {}
 
 class Client {
-  const API_URI = 'http://api.nicalert.com.ar';
+  const REGEXP_DOMAIN = '/^(www\.)?(?<name>[a-z0-9-]{1,19})(?<domain>\.\w{3}\.ar)$/';
+  const REGEXP_HOST   = '/^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$/';
+  const REGEXP_IP     = '/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/';
+  const REGEXP_ID     = '/^(REG|DEL|PER|ENT|HOS|REN|TRF)([0-9]{5,})$/';
+
+  const API_URI       = 'http://api.nicalert.com.ar';
 
   private $agent;  # Restful_agent is the only dependency
   private $assoc;  # return responses as associative arrays?
@@ -38,8 +43,11 @@ class Client {
 
   public function domains($domain=NULL) {
     if (!empty($domain)) {
-      $domain = trim($domain);
-      $response = $this->agent->get("{$this->api_host}/domains/{$domain}");
+      $domain = strtolower(trim($domain));
+      if ($this->is_valid_domain($domain)) {
+        $response = $this->agent->get("{$this->api_host}/domains/{$domain}");
+      }
+      else throw ParameterError;
     }
     else $response = $this->agent->get("{$this->api_host}/domains");
 
@@ -58,22 +66,47 @@ class Client {
     return $this->result_for($response);
   }
 
-  public function transactions($domain) {
-    $domain = trim($domain);
-    $response = $this->agent->get("{$this->api_host}/transactions/{$domain}");
-    return $this->result_for($response);
+  public function transactions($domain_or_id) {
+    $domain_or_id = trim($domain_or_id);
+    if ($this->is_valid_domain($domain_or_id) || $this->is_valid_id($domain_or_id)) {
+      $response = $this->agent->get("{$this->api_host}/transactions/{$domain_or_id}");
+      return $this->result_for($response);
+    }
+    else throw ParameterError;
   }
 
   public function name_servers($host) {
-    $host = trim($host);
-    $response = $this->agent->get("{$this->api_host}/name_servers/{$host}");
-    return $this->result_for($response);
+    $host = strtolower(trim($host));
+    if ($this->is_valid_host($host) || $this->is_valid_ip($host)) {
+      $response = $this->agent->get("{$this->api_host}/name_servers/{$host}");
+      return $this->result_for($response);
+    }
+    else throw ParameterError;
   }
 
   public function status($domain) {
-    $domain = trim($domain);
-    $response = $this->agent->get("{$this->api_host}/status/{$domain}");
-    return $this->result_for($response);
+    $domain = strtolower(trim($domain));
+    if ($this->is_valid_domain($domain)) {
+      $response = $this->agent->get("{$this->api_host}/status/{$domain}");
+      return $this->result_for($response);
+    }
+    else throw ParameterError;
+  }
+
+  private function is_valid_domain($domain) {
+    return preg_match(self::REGEXP_DOMAIN,$domain) === 1;
+  }
+
+  private function is_valid_host($host) {
+    return preg_match(self::REGEXP_HOST,$host) === 1;
+  }
+
+  private function is_valid_ip($ip) {
+    return preg_match(self::REGEXP_IP,$ip) === 1;
+  }
+
+  private function is_valid_id($id) {
+    return preg_match(self::REGEXP_ID,$id) === 1;
   }
 
   private function result_for($response) {
