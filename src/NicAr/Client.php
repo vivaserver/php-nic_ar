@@ -80,7 +80,7 @@ class Client {
     try {
       switch ($response->code) {
         case 200:
-          return json_decode($response->body,$this->assoc);
+          return json_decode($response->body,!empty($this->assoc));
         break;
         case 204:
           throw new NoContent;
