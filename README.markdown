@@ -1,6 +1,6 @@
-# NicAr Client
+# NicAr\Client
 
-The NicAr Client [Composer](http://getcomposer.org/) package allows to you programatically extract information about any ".ar" (Argentina) domain name. This package is also the _official_ PHP client for the [public nic!alert API](http://api.nicalert.com.ar).
+The NicAr\Client [Composer](http://getcomposer.org/) package allows to you programatically extract information about any ".ar" (Argentina) domain name. This package is also the _official_ PHP client for the [public nic!alert API](http://api.nicalert.com.ar).
 
 ## Installation
 
@@ -17,7 +17,7 @@ The package will be automatically installed when you execute the `composer insta
 
 ### Installation without Composer
 
-If for some reason you want to install the NicAr Client without the Composer package manager, there are two relevant files you need:
+If for some reason you want to install the NicAr\Client without the Composer package manager, there are two relevant files you need:
 
 1. [Agent.php](https://github.com/vivaserver/php-restful_agent/blob/master/src/Restful/Agent.php)
 2. [Client.php](https://github.com/vivaserver/php-nic_ar/blob/master/src/NicAr/Client.php)
@@ -30,14 +30,14 @@ Having both files on the PHP include path, you can require both on that order be
 
 ## Usage
 
-Create a new instance of the NicAr Client after requiring the Composer autoloader and you should be ready to go.
+Create a new instance of the NicAr\Client after requiring the Composer autoloader and you should be ready to go.
 
     require 'vendor/autoload.php';
     $client = new NicAr\Client;
 
-The NicAr Client supports lookups for domain names, domain transactions, entities, people and name servers.
+The NicAr\Client supports lookups for domain names, domain transactions, entities, people and name servers.
 
-The NicAr Client class constructor supports one boolean option for setting the responses to objects or associative arrays formats. By default the responses will be returned with an object format; to set it to an associative array format, instantiate the class with a TRUE argument:
+The NicAr\Client class constructor supports one boolean option for setting the responses to objects or associative arrays formats. By default the responses will be returned with an object format; to set it to an associative array format, instantiate the class with a TRUE argument:
 
     $client = new NicAr\Client(TRUE);
 
