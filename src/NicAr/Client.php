@@ -118,31 +118,31 @@ class Client {
         case 204:
           throw new NoContent;
         break;
-        case 400:
+        case 400:  # Bad Request
           throw new ParameterError($response->body);
         break;
-        case 404:
+        case 404:  # Not Found
           throw new NotFound;
         break;
-        case 406:
+        case 406:  # Not Acceptable
           throw new RequestError($response->body);
         break;
-        case 408:
+        case 408:  # Request Timeout
           throw new TimeoutError($response->body);
         break;
-        case 412:
+        case 412:  # Precondition Failed
           throw new PreconditionError($response->body);
         break;
-        case 417:
+        case 417:  # Expectation Failed
           throw new ExpectationError($response->body);
         break;
-        case 424:
+        case 424:  # Failed Dependency
           throw new CaptchaError($response->body);
         break;
-        case 500:
+        case 500:  # System Error
           throw new ServiceError($response->body);
         break;
-        case 503:
+        case 503:  # Service Unavailable
           throw new UnavailableError($response->body);
         break;
       }
