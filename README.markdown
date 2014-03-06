@@ -285,7 +285,7 @@ A successful response would be like:
 
 ## Full API reference
 
-The full documentation of the [public nic!alert API](http://api.nicalert.com.ar) is available at [http://api.nicalert.com.ar/docs](http://api.nicalert.com.ar/docs) if you want to write your own client, use any other language, or just use CURL in a RESTful way.
+The full documentation of the [public nic!alert API](http://api.nicalert.me) is available at [http://api.nicalert.me/docs](http://api.nicalert.me/docs) if you want to write your own client, use any other language, or just use CURL in a RESTful way.
 
 ## License
 
@@ -293,4 +293,4 @@ This software is released under the [MIT License](http://www.opensource.org/lice
 
 ## Copyright
 
-&copy;2013 [Cristian R. Arroyo](mailto:cristian.arroyo@vivaserver.com)
+&copy;2014 [Cristian R. Arroyo](mailto:cristian.arroyo@vivaserver.com)

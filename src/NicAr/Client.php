@@ -26,7 +26,7 @@ class Client {
   const API_URI       = 'http://api.nicalert.me/v1';
 
   private $agent;  # Restful_agent is the only dependency
-  private $token;  # set token to resolve CAPTCHAs
+  private $token;  # set token to resolve CAPTCHAs. see http://api.nicalert.me/pricing
   private $assoc;  # return responses as associative arrays?
   private $api_host;
 
