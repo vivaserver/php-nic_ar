@@ -47,7 +47,7 @@ All the following usage examples will consider responses with an associative arr
 
 First, find out what kind of domain names you are allowed to lookup.
 
-    $domains = $client->domains();
+    $domains = $client->whois();
 
 A typical response would be:
 
@@ -64,7 +64,7 @@ A typical response would be:
 
 All the following lookups will raise a `NicAr\NotFound` exception if the requested resource could not be found.
 
-    $domains = $client->domains("vivaserver.com.ar");
+    $domains = $client->whois("vivaserver.com.ar");
 
 The response for an existing, registered, delegated domain would be like this:
 
@@ -79,10 +79,9 @@ The response for an existing, registered, delegated domain would be like this:
           [pending] => 
           [registered] => 1
         )
-      [name] => vivaserver
-      [domain] => .com.ar
+      [name] => vivaserver.com.ar
       [created_on] => 2004-11-18
-      [expires_on] => 2013-11-18
+      [expires_on] => 2014-11-18
       [message] => 
       [contacts] => Array
         (
@@ -98,44 +97,11 @@ The response for an existing, registered, delegated domain would be like this:
               [phone] => (0388)155827713
               [fax] => (0388)155827713
             )
-          [responsible] => Array
-            (
-              [name] => Cristian Renato Arroyo
-              [address] => Pje. Vucetich 676. Ciudad De Nieva.
-              [city] => S. S. de jujuy
-              [province] => Jujuy
-              [zip_code] => 4600
-              [country] => Argentina
-              [phone] => (0388)155827713
-              [fax] => (0388)155827713
-              [work_hours] => 8am-1pm
-            )
-          [administrative] => Array
-            (
-              [name] => Dynamic DNS Network Services
-              [address] => 210 Park Ave. #267
-              [city] => Worcester
-              [province] => 
-              [zip_code] => MA 01609
-              [country] => USA
-              [phone] => 1-508-798-2145
-              [fax] => 1-508-798-5748
-              [activity] => Network Services
-            )
-          [technical] => Array
-            (
-              [name] => Andre Dure
-              [address] => Humahuaca 1303
-              [city] => Capital Federal
-              [province] => Ciudad de Buenos Aires
-              [zip_code] => C1405BIA
-              [country] => Argentina
-              [phone] => 49588864
-              [fax] => 43335885
-              [work_hours] => 10 a 22
-            )
+          [responsible] => 
+          [administrative] => 
+          [technical] => 
         )
-      [dns_servers] => Array
+      [name_servers] => Array
         (
           [primary] => Array
             (
@@ -165,92 +131,6 @@ The response for an existing, registered, delegated domain would be like this:
         )
     )
 
-### Entities lookups
-
-All registered domains have a related entities (registrant/administrative contacts) and persons (responsible/technical contacts).
-
-    $client->entities("Dynamic DNS Network Services");
-
-A typical response for an entity resource would be:
-
-    Array
-    (
-      [name] => Dynamic DNS Network Services
-      [type] => ADMINISTRADORA
-      [address] => 210 Park Ave. #267
-      [city] => Worcester
-      [province] => 
-      [country] => USA
-      [activity] => Network Services
-      [handle] => NICAR-E607791
-    )
-
-### People lookups
-
-    $client->people("Andre Dure");
-
-A typical response for a person resource would be:
-
-    Array
-    (
-      [name] => Andre Dure
-      [handle] => NICAR-P425476
-    )
-
-### Name Servers lookups
-
-Name servers can also be queried by hostname or IP.
-
-    $client->name_servers("ns1.mydyndns.org");
-
-A typical response would be:
-
-    Array
-    (
-      [host] => ns1.mydyndns.org
-      [ip] => 
-      [owner] => Andre Dure
-      [operator] => Andre Dure
-      [handle] => NICAR-H12587
-    )
-
-Name servers can also be queried by it's IP address, should it be available.
-
-### Domain transactions lookups
-
-If a domain name has no recent transactions, a `NicAr\NoContent` exception will be raised. Otherwise an array of recent transactions will be returned.
-
-    $client->transactions("amazon.com.ar");
-
-A typical, non-empty response would be:
-
-    Array
-    (
-      [0] => Array
-        (
-          [id] => REN19949812
-          [created_at] => 2013-07-11T12:10:57-03:00
-          [description] => Renovacion de Nombre
-          [status] => FINALIZADO
-          [notes] => Tramite finalizado el 11/07/13.
-        )
-    )
-
-Transactions can also be queried by it's unique identifier:
-
-    $client->transactions("REN19949812");
-
-A successful response would look like:
-
-    Array
-    (
-      [domain] => amazon.com.ar
-      [created_at] => 2013-07-11T12:10:57-03:00
-      [description] => Renovacion de Nombre
-      [status] => FINALIZADO
-      [notes] => Tramite finalizado el 11/07/13.
-    )
-
 ### Check a domain status
 
 You can also check if a given domain name resolves OK to it's name servers, thus effectively know if it's available online or not.
@@ -261,11 +141,14 @@ A successful response would be like:
 
     Array
     (
-      [domain] => www.nic.ar
-      [online] => 1
-      [offline] => 
-      [ip] => 200.16.109.25
-      [host] => roldan.nic.ar
+      [status] => Array
+        (
+          [domain] => www.nic.ar
+          [online] => 1
+          [offline] => 
+          [ip] => 200.16.109.25
+          [host] => roldan.nic.ar
+        )
     )
 
 But also note that a domain name without the "www." may or may not resolve in the same way.
@@ -276,11 +159,14 @@ A successful response would be like:
 
     Array
     (
-      [domain] => nic.ar
-      [online] => 1
-      [offline] => 
-      [ip] => 200.16.109.19
-      [host] => firpo.nic.ar
+      [status] => Array
+        (
+          [domain] => nic.ar
+          [online] => 1
+          [offline] => 
+          [ip] => 200.16.109.19
+          [host] => firpo.nic.ar
+        )
     )
 
 ## Full API reference
