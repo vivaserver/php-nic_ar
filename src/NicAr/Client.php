@@ -4,7 +4,7 @@ namespace NicAr;
 # NicAr\Client
 # This is the _official_ PHP client for accessing the public nic!alert API
 #
-# (c)2013 Cristian R. Arroyo <cristian.arroyo@vivaserver.com>
+# (c)2014 Cristian R. Arroyo <cristian.arroyo@vivaserver.com>
 
 class NoContent extends \Exception {}
 class NotFound  extends \Exception {}
@@ -22,66 +22,38 @@ class Client {
   const REGEXP_DOMAIN = '/^(www\.)?(?<name>[a-z0-9-]{1,19})(?<domain>\.\w{3}\.ar)$/';
   const REGEXP_HOST   = '/^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$/';
   const REGEXP_IP     = '/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/';
-  const REGEXP_ID     = '/^(REG|DEL|PER|ENT|HOS|REN|TRF)([0-9]{5,})$/';
 
-  const API_URI       = 'http://api.nicalert.com.ar';
+  const API_URI       = 'http://api.nicalert.me/v1';
 
   private $agent;  # Restful_agent is the only dependency
+  private $token;  # set token to resolve CAPTCHAs
   private $assoc;  # return responses as associative arrays?
   private $api_host;
 
-  public function __construct($assoc=FALSE, $api_hosts=array()) {
+  public function __construct($token=NULL, $assoc=FALSE, $api_hosts=array()) {
     if (!empty($api_hosts)) {  # multiple API hosts, anyone?
       $idx = array_rand($api_hosts);
       $this->api_host = $api_hosts[$idx];
     }
     else $this->api_host = self::API_URI;
 
+    $this->token = $token;
     $this->assoc = $assoc;
     $this->agent = new \Restful\Agent;
   }
 
-  public function domains($domain=NULL) {
+  public function whois($domain=NULL) {
     if (!empty($domain)) {
       $domain = strtolower(trim($domain));
       if ($this->is_valid_domain($domain)) {
-        $response = $this->agent->get("{$this->api_host}/domains/{$domain}");
+        $with_token = empty($this->token) ? '' : "?token={$this->token}";
+        $response = $this->agent->get("{$this->api_host}/whois/{$domain}{$with_token}");
       }
       else throw ParameterError;
     }
-    else $response = $this->agent->get("{$this->api_host}/domains");
+    else $response = $this->agent->get("{$this->api_host}/whois");
 
     return $this->result_for($response);
-  }
-
-  public function entities($name) {
-    $name = urlencode(trim($name));
-    $response = $this->agent->get("{$this->api_host}/entities/{$name}");
-    return $this->result_for($response);
-  }
-
-  public function people($name) {
-    $name = urlencode(trim($name));
-    $response = $this->agent->get("{$this->api_host}/people/{$name}");
-    return $this->result_for($response);
-  }
-
-  public function transactions($domain_or_id) {
-    $domain_or_id = trim($domain_or_id);
-    if ($this->is_valid_domain($domain_or_id) || $this->is_valid_id($domain_or_id)) {
-      $response = $this->agent->get("{$this->api_host}/transactions/{$domain_or_id}");
-      return $this->result_for($response);
-    }
-    else throw ParameterError;
-  }
-
-  public function name_servers($host) {
-    $host = strtolower(trim($host));
-    if ($this->is_valid_host($host) || $this->is_valid_ip($host)) {
-      $response = $this->agent->get("{$this->api_host}/name_servers/{$host}");
-      return $this->result_for($response);
-    }
-    else throw ParameterError;
   }
 
   public function status($domain) {
@@ -103,10 +75,6 @@ class Client {
 
   private function is_valid_ip($ip) {
     return preg_match(self::REGEXP_IP,$ip) === 1;
-  }
-
-  private function is_valid_id($id) {
-    return preg_match(self::REGEXP_ID,$id) === 1;
   }
 
   private function result_for($response) {
