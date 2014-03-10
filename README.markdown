@@ -1,6 +1,6 @@
 # NicAr\Client
 
-The NicAr\Client [Composer](http://getcomposer.org/) package allows to you programatically extract information about any ".ar" (Argentina) domain name. This package is also the _official_ PHP client for the [public nic!alert API](http://api.nicalert.com.ar).
+The NicAr\Client [Composer](http://getcomposer.org/) package allows to you programatically extract information about any ".ar" (Argentina) domain name. This package is also the _official_ PHP client for the [public nic!alert API](http://api.nicalert.me).
 
 ## Installation
 
@@ -35,17 +35,21 @@ Create a new instance of the NicAr\Client after requiring the Composer autoloade
     require 'vendor/autoload.php';
     $client = new NicAr\Client;
 
-The NicAr\Client supports lookups for domain names, domain transactions, entities, people and name servers.
+The NicAr\Client class constructor has two initialization options, *both optional*:
 
-The NicAr\Client class constructor supports one boolean option for setting the responses to objects or associative arrays formats. By default the responses will be returned with an object format; to set it to an associative array format, instantiate the class with a TRUE argument:
+1. The first is a string that can be set to an API token to by-pass the CAPTCHA challenge that the NIC.ar website sometimes requests you to solve before answering your domain lookup. Please refer to the nic!alert API [official documentation](http://api.nicalert.me/docs) for more details.  
 
-    $client = new NicAr\Client(TRUE);
+        $client = new NicAr\Client("234d3cdf979e04db3d709ed8");
+
+2. The second is a boolean option for setting the responses to objects or associative arrays formats. By default the responses will be returned in an object format, just like the [json_decode](http://php.net/json_decode) function would. To set it to an associative array format, pass the TRUE argument:  
+
+        $client = new NicAr\Client(NULL, TRUE);
 
 All the following usage examples will consider responses with an associative array format.
 
 ### Domain lookups
 
-First, find out what kind of domain names you are allowed to lookup.
+The NicAr\Client supports lookups for domain names. First, find out what kind of domain names you are allowed to lookup.
 
     $domains = $client->whois();
 
